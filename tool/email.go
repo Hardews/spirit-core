@@ -10,6 +10,7 @@ import (
 	"errors"
 	"github.com/jordan-wright/email"
 	"net/smtp"
+	"os"
 	"regexp"
 	"strings"
 )
@@ -29,6 +30,11 @@ const (
 	Reply = iota + 1
 	Code
 	Future
+)
+
+var (
+	sendEmailName     = os.Getenv("spirit_core_email_send_username")
+	sendEmailPassword = os.Getenv("spirit_core_email_send_password")
 )
 
 func SendEmail(theme, address, content string, choice int) error {
@@ -57,7 +63,7 @@ func SendEmail(theme, address, content string, choice int) error {
 	}
 
 	// 设置相关的配置
-	return em.Send("smtp.qq.com:25", smtp.PlainAuth("", "twentyue@qq.com", "ysmzhppffcwpdgdd", "smtp.qq.com"))
+	return em.Send("smtp.qq.com:25", smtp.PlainAuth("", sendEmailName, sendEmailPassword, "smtp.qq.com"))
 }
 
 func IsEmail(email string) bool {
